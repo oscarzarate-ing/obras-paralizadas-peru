@@ -3,6 +3,8 @@ Análisis de obras públicas paralizadas con **SQL Server** y **Power BI**, a pa
 
 **Autor:** Oscar Zarate · Ingeniería Industrial
 
+📊 **[Ver presentación ejecutiva (PDF)](docs/Presentacion_Ejecutiva_ObrasParalizadas.pdf)** · 📈 [Dashboard en Power BI](ObrasParalizadas.pbix) · 🛠️ [Guía de instalación](GUIA_INSTALACION.md)
+
 ![Dashboard](capturas/dashboard_p1.png)
 
 ---
@@ -124,6 +126,9 @@ Ninguna es "la correcta" en abstracto: depende del objetivo. *Más cantidad* max
 2. Ejecuta en SSMS, en orden: `sql/01` → `sql/02` → `sql/03` → `sql/04` → `sql/05`. El script `00_parche_rendimiento.sql` es solo para SQL Server 2019+, en caso de lentitud.
 3. Conecta Power BI a la base `ObrasParalizadas` e importa las tablas `dw.*`.
 4. Opcional: aplica el tema `powerbi/Tema_ObrasParalizadas_v3.json` desde Diseño → Importar tema y usa los fondos de `powerbi/` como imagen al fondo de cada página.
+
+## Licencia
+Código bajo licencia [MIT](LICENSE). Datos: Contraloría General de la República (información pública).
 
 ## Herramientas
 SQL Server 2025 · SSMS · Power BI Desktop · Python (pandas) · Excel
