@@ -18,7 +18,7 @@ TXT, TXT2, MUT = "#F8FAFC", "#C9D6EA", "#9FB3D1"
 BLUE, GOLD, GRAY = "#3B82F6", "#EAB308", "#4A5F82"
 OUT = "/home/claude/obras/linkedin_v3"; os.makedirs(OUT, exist_ok=True)
 CAP = "/home/claude/obras/capturas_v3"
-TOTAL = 12
+TOTAL = 13
 FUENTE = "Fuente: Contraloría General de la República, 4 informes (set-2025 a jun-2026). Análisis propio."
 
 # ---------------- datos (misma lógica que el SQL) ----------------
@@ -121,7 +121,7 @@ title(ax, "Lo esencial en 30 segundos", size=42)
 items = [("1", f"El dinero destraba", f"Con presupuesto asignado, una obra sale {pim_rate[1]/pim_rate[0]:.1f} veces más\nde la lista de paralizadas ({pim_rate[1]:.1f} % vs {pim_rate[0]:.1f} %)."),
          ("2", "El avance no salva a una obra", f"Una obra al 90 % se reactiva casi igual que una al 10 %\n(entre {av_rate.min():.1f} % y {av_rate.max():.1f} % según el tramo)."),
          ("3", "Dos de cada tres no tienen presupuesto", f"{SIN_PIM:,} de {N_OBRAS:,} obras ({SIN_PIM/N_OBRAS*100:.0f} %) no tienen presupuesto\nasignado para 2026."),
-         ("→", "Recomendación", f"Priorizar con un índice: con S/ {PRES} millones se terminan {SIM_N} obras\n({SIM_AV:.0f} % de avance) y se aprovechan S/ {SIM_COSTO:,.0f} millones ya invertidos.")]
+         ("→", "Recomendación", f"Según el índice, con S/ {PRES} millones se terminan {SIM_N} obras ({SIM_AV:.0f} % de\navance) y se aprovechan S/ {SIM_COSTO:,.0f} millones ya invertidos.")]
 for i, (num, head, body) in enumerate(items):
     y = 270 + i * 225; rec = num == "→"
     card(ax, 70, y, 940, 200, fc="#13305C" if rec else CARD, ec=GOLD if rec else LINE, lw=1.8 if rec else 1.4)
@@ -190,8 +190,9 @@ a.set_xticks([0, 1]); a.set_xticklabels(["Con presupuesto 2026", "Sin presupuest
 a.set_ylim(0, 21); a.set_yticks([])
 for s in a.spines.values(): s.set_visible(False)
 a.tick_params(axis="x", length=0, pad=12)
-para(ax, 70, 1000, "Tasa de salida: % de obras que dejan la lista de paralizadas\nde un trimestre al siguiente (set-2025 → jun-2026).", size=19, color=MUT)
-para(ax, 70, 1110, f"Y hoy {SIN_PIM:,} obras ({SIN_PIM/N_OBRAS*100:.0f} %) no tienen presupuesto asignado.", size=22, color=TXT, weight="semibold")
+para(ax, 70, 985, "Tasa de salida: % de obras que dejan la lista de paralizadas\nde un trimestre al siguiente (set-2025 → jun-2026).", size=18, color=MUT)
+para(ax, 70, 1065, "Se cumple en las 5 familias de causas, en los 3 niveles de gobierno\ny en los 4 tramos de avance: siempre entre 2 y 3 veces más.", size=19, color=TXT2)
+para(ax, 70, 1150, f"Y hoy {SIN_PIM:,} obras ({SIN_PIM/N_OBRAS*100:.0f} %) no tienen presupuesto asignado.", size=22, color=TXT, weight="semibold")
 foot(ax)
 files.append(save(fig, "06_hallazgo_presupuesto"))
 
@@ -217,7 +218,7 @@ files.append(save(fig, "07_hallazgo_avance"))
 
 # 8 · Recomendación + simulador
 fig, ax = base(8, "Recomendación · priorizar")
-title(ax, f"Con S/ {PRES} millones se terminan\n{SIM_N} obras casi listas", size=42)
+title(ax, f"Con S/ {PRES} millones, el índice\nprioriza {SIM_N} obras casi listas", size=42)
 para(ax, 70, 300, f"Construí un índice de priorización (0-100) y un simulador en Power BI:\neliges el presupuesto y te dice qué obras se terminan primero.", size=20, ls=1.45)
 image(fig, f"{CAP}/dashboard_p3.png", 40, 420, 1000)
 k = [(f"{SIM_N}", "obras se terminan"), (f"{SIM_AV:.0f} %", "de avance promedio"), (f"S/ {SIM_COSTO:,.0f} M", "ya invertidos se\naprovechan")]
@@ -228,15 +229,42 @@ for i, (big, small) in enumerate(k):
     para(ax, x + 30, 1100, small, size=18.5, ls=1.3)
 files.append(save(fig, "08_recomendacion"))
 
+# 9 · Tres estrategias
+V = U[U.saldo_p > 0]
+def strat(df):
+    df = df.assign(a=df.saldo_p.cumsum()); r = df[df.a <= PRES * 1e6]
+    return len(r), r.avance.mean(), r.costo_ref.sum() / 1e6, 100 * r.pim.mean()
+ST = [("Más cantidad", "Menor saldo primero", strat(V.sort_values("saldo_p")), BLUE),
+      ("Índice equilibrado", "Criterio combinado", strat(V.sort_values("idx", ascending=False)), GOLD),
+      ("Más avanzadas", "Mayor avance primero", strat(V.sort_values(["avance", "saldo_p"], ascending=[False, True])), GRAY)]
+FACTS["ESTRATEGIAS"] = {n: dict(obras=v[0], avance=v[1], invertido=v[2], con_pim=v[3]) for n, _, v, _ in ST}
+fig, ax = base(9, "Gestión de portafolio")
+title(ax, f"Mismo presupuesto (S/ {PRES} M),\ntres estrategias distintas", size=40)
+para(ax, 70, 300, "¿Qué obras financiar primero? Depende del objetivo.", size=21)
+heads = ["Obras que\nse terminan", "Avance\npromedio", "Inversión que\nse aprovecha", "Con\npresupuesto"]
+for j, h in enumerate(heads):
+    para(ax, [455, 595, 730, 885][j], 375, h, size=14.5, color=MUT, ls=1.25)
+for i, (n, d, (ob, av, inv, pim), col) in enumerate(ST):
+    y = 460 + i * 200; hi = col == GOLD
+    card(ax, 70, y, 940, 180, fc="#13305C" if hi else CARD, ec=GOLD if hi else LINE, lw=1.8 if hi else 1.4)
+    ax.add_patch(plt.Rectangle((70, y + 30), 7, 120, color=col))
+    ax.text(105, y + 45, n, color=TXT, fontsize=21, fontweight="bold", va="top")
+    para(ax, 105, y + 92, d, size=15, color=MUT)
+    for j, v in enumerate([f"{ob:,}", f"{av:.0f} %", f"S/ {inv:,.0f} M", f"{pim:.0f} %"]):
+        ax.text([455, 595, 730, 885][j], y + 90, v, color=GOLD if hi else TXT, fontsize=24 if j != 2 else 20, fontweight="bold", va="center")
+para(ax, 70, 1080, "Más cantidad suma más obras, pero con menos avance y casi sin presupuesto\nasignado. El índice busca obras que de verdad se puedan terminar.", size=18.5, color=TXT2)
+foot(ax)
+files.append(save(fig, "09_estrategias"))
+
 # 9 · Dashboard
-fig, ax = base(9, "El dashboard")
+fig, ax = base(10, "El dashboard")
 title(ax, "3 páginas: problema → causas → decisión", size=34)
 image(fig, f"{CAP}/dashboard_p1.png", 100, 220, 880)
 image(fig, f"{CAP}/dashboard_p2.png", 100, 220 + 495 + 22, 880)
-files.append(save(fig, "09_dashboard"))
+files.append(save(fig, "10_dashboard"))
 
 # 10 · Método
-fig, ax = base(10, "Cómo lo hice")
+fig, ax = base(11, "Cómo lo hice")
 title(ax, "De 4 Excel de la Contraloría\na un modelo de datos", size=40)
 steps = [("1", "Datos", f"4 informes\n{N_REG:,} filas"), ("2", "SQL Server", "Limpieza con\n9 reglas"),
          ("3", "Modelo", "Estrella: 1 hecho\n+ 7 dimensiones"), ("4", "Power BI", "DAX, índice y\nsimulador")]
@@ -259,10 +287,10 @@ card(ax, cx - 160, cy - 52, 320, 104, fc="#13305C", ec=GOLD, lw=2)
 ax.text(cx, cy - 12, "fact_obra_corte", color=TXT, fontsize=22, fontweight="bold", ha="center", va="center")
 ax.text(cx, cy + 24, "1 fila por obra y trimestre", color=MUT, fontsize=15, ha="center", va="center")
 foot(ax, "Código SQL, modelo y documentación en GitHub.")
-files.append(save(fig, "10_metodo"))
+files.append(save(fig, "11_metodo"))
 
 # 11 · Plan de acción + limitaciones
-fig, ax = base(11, "Plan de acción")
+fig, ax = base(12, "Plan de acción")
 title(ax, "Cómo lo gestionaría\ncomo proyecto", size=42)
 fases = [("FASE 1 · 0-3 meses", "Terminar lo casi listo", f"Financiar las {SIM_N} obras del índice con S/ {PRES} millones."),
          ("FASE 2 · 3-9 meses", "Destrabar contratos", "Mesa de solución de controversias para los\nincumplimientos y arbitrajes."),
@@ -276,12 +304,12 @@ for i, (f, h, b) in enumerate(fases):
     para(ax, 110, y + 110, b, size=17.5, ls=1.3)
 ax.text(70, 1000, "LIMITACIONES", color=MUT, fontsize=16.5, fontweight="bold", va="top")
 para(ax, 70, 1038, "• \"Salir de la lista\" puede ser reactivación, culminación o baja: la CGR no lo distingue.\n"
-                   "• Es una asociación, no una causa probada. • Solo 4 trimestres de datos.", size=16.5, ls=1.5)
+                   "• Es una asociación, no una causa probada. • Solo 4 trimestres de datos.\n• El saldo de la CGR no incluye reajustes ni arbitrajes: S/ 40 M es un orden de magnitud.", size=16.5, ls=1.5)
 foot(ax)
-files.append(save(fig, "11_plan"))
+files.append(save(fig, "12_plan"))
 
 # 12 · Cierre
-fig, ax = base(12, "Resultados")
+fig, ax = base(13, "Resultados")
 title(ax, "Lo que entregó\neste proyecto", size=44)
 res = [(f"{N_REG:,}", "registros oficiales limpiados\ne integrados en SQL Server"),
        ("2.2×", "más reactivación con presupuesto:\nel hallazgo central"),
@@ -294,7 +322,7 @@ for i, (b, s) in enumerate(res):
     para(ax, 330, y + 30, s, size=20, color=TXT2, ls=1.35)
 para(ax, 70, 1040, "Datos públicos + SQL + Power BI + gestión de proyectos\npara convertir un problema país en decisiones concretas.", size=22, color=TXT, weight="semibold")
 foot(ax, "Código, modelo y dashboard: enlace en el post.")
-files.append(save(fig, "12_cierre"))
+files.append(save(fig, "13_cierre"))
 
 # PDF
 ims = [Image.open(f).convert("RGB") for f in files]

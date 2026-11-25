@@ -13,7 +13,7 @@ A junio de 2026 hay **2,262 obras públicas paralizadas** en el Perú, con **S/ 
 ## Resultados
 - **9,134 registros** oficiales de 4 informes de la Contraloría, limpiados e integrados en un modelo estrella en SQL Server.
 - **Hallazgo central:** con presupuesto asignado, una obra sale **2.2 veces más** de la lista de paralizadas.
-- **Decisión:** con **S/ 40 millones** se terminan **106 obras** con 91 % de avance y se aprovechan **S/ 881 millones** ya invertidos (simulador en Power BI).
+- **Decisión:** según el índice de priorización, con **S/ 40 millones** se terminan **106 obras** con 91 % de avance y se aprovechan **S/ 881 millones** ya invertidos (simulador en Power BI). Se compara con otras dos estrategias de portafolio (ver abajo).
 - **Producto:** dashboard de 3 páginas (problema → causas → decisión) con simulador de presupuesto y un plan de acción en 3 fases.
 
 ## Hallazgos principales
@@ -25,6 +25,23 @@ A junio de 2026 hay **2,262 obras públicas paralizadas** en el Perú, con **S/ 
 | 4 | Las disputas contractuales son las que menos se resuelven (**8.6 %** de salida). |
 | 5 | Siguiendo el índice de priorización, con **S/ 40 millones** se terminan **106 obras** con **91 %** de avance promedio, en las que ya se invirtieron **S/ 881 millones**. |
 | 6 | La mitad de las obras necesita menos de **S/ 619 mil** para terminarse (mediana); el promedio, S/ 12.2 millones, lo inflan unas pocas megaobras. |
+
+### ¿El efecto del presupuesto se sostiene? (prueba por grupos)
+La tasa de salida con presupuesto supera a la tasa sin presupuesto en **todos** los grupos:
+
+| Grupo | Sin presupuesto | Con presupuesto |
+|---|---|---|
+| Causa contractual | 6.0 % | 11.9 % |
+| Causa financiera | 7.1 % | 20.9 % |
+| Causa técnica / permisos | 7.1 % | 19.5 % |
+| Causa externa | 8.8 % | 28.0 % |
+| Gobierno local | 7.9 % | 20.2 % |
+| Gobierno regional | 7.2 % | 15.9 % |
+| Gobierno nacional | 5.7 % | 11.8 % |
+| Avance 0-20 % | 7.0 % | 16.0 % |
+| Avance 80-100 % | 9.9 % | 16.0 % |
+
+Además, la salida es casi siempre definitiva: de 208 obras que salieron entre set-25 y dic-25, solo 8 volvieron a aparecer; de 353 que salieron entre dic-25 y mar-26, solo 24.
 
 > **Limitación:** "salir de la lista" significa que la obra dejó de figurar como paralizada en el siguiente informe. Puede haberse reactivado, culminado o dado de baja, porque la CGR no indica el motivo. Los hallazgos son correlaciones, no causas probadas.
 
@@ -70,6 +87,17 @@ Power BI (medidas DAX + dashboard de 3 páginas)
 | Causa resoluble (`dim_causal.factor_resolucion`) | 15 % |
 | Tiene presupuesto (PIM) | 15 % |
 | Está en la lista priorizada oficial (Ley 31589) | 5 % |
+
+## Mismo presupuesto, tres estrategias (S/ 40 millones)
+| Estrategia | Criterio | Obras que se terminan | Avance promedio | Inversión que se aprovecha | Con presupuesto asignado |
+|---|---|---|---|---|---|
+| Más cantidad | Menor saldo primero | 415 | 70 % | S/ 927 M | 11 % |
+| **Índice equilibrado** | Avance, saldo, causa, presupuesto | **106** | **91 %** | **S/ 881 M** | **78 %** |
+| Más avanzadas | Mayor avance primero | 15 | 100 % | S/ 82 M | 27 % |
+
+Ninguna es "la correcta" en abstracto: depende del objetivo. *Más cantidad* maximiza obras, pero casi sin presupuesto asignado y con menos avance (más riesgo de que no se terminen). El índice busca obras viables de cerrar. Los pesos del índice son un supuesto: con otras combinaciones razonables el resultado va de 81 a 164 obras.
+
+> El saldo que reporta la CGR no incluye reajustes, arbitrajes ni liquidaciones: los montos son un orden de magnitud, no un presupuesto exacto.
 
 ## Simulador de presupuesto (Power BI)
 - Tabla `Presupuesto = GENERATESERIES(0, 500, 5)` (S/ millones) con un segmentador deslizante.
