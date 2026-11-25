@@ -1,0 +1,369 @@
+{
+ "name": "Obras Paralizadas - Azul institucional + dorado",
+ "dataColors": [
+  "#3B82F6",
+  "#EAB308",
+  "#60A5FA",
+  "#94A3B8",
+  "#2563EB",
+  "#FACC15",
+  "#1D4ED8",
+  "#CBD5E1"
+ ],
+ "background": "#10264A",
+ "foreground": "#E2E8F0",
+ "tableAccent": "#3B82F6",
+ "good": "#059669",
+ "neutral": "#EAB308",
+ "bad": "#DC2626",
+ "maximum": "#3B82F6",
+ "center": "#64748B",
+ "minimum": "#10264A",
+ "textClasses": {
+  "callout": {
+   "fontSize": 34,
+   "fontFace": "Segoe UI Semibold",
+   "color": "#F8FAFC"
+  },
+  "title": {
+   "fontSize": 15,
+   "fontFace": "Segoe UI Semibold",
+   "color": "#F8FAFC"
+  },
+  "header": {
+   "fontSize": 13,
+   "fontFace": "Segoe UI Semibold",
+   "color": "#E2E8F0"
+  },
+  "label": {
+   "fontSize": 12,
+   "fontFace": "Segoe UI",
+   "color": "#C9D6EA"
+  }
+ },
+ "visualStyles": {
+  "*": {
+   "*": {
+    "background": [
+     {
+      "show": true,
+      "color": {
+       "solid": {
+        "color": "#10264A"
+       }
+      },
+      "transparency": 0
+     }
+    ],
+    "border": [
+     {
+      "show": true,
+      "color": {
+       "solid": {
+        "color": "#1E3A66"
+       }
+      },
+      "radius": 14
+     }
+    ],
+    "dropShadow": [
+     {
+      "show": false
+     }
+    ],
+    "title": [
+     {
+      "show": true,
+      "fontColor": {
+       "solid": {
+        "color": "#F8FAFC"
+       }
+      },
+      "fontSize": 15,
+      "fontFamily": "Segoe UI Semibold"
+     }
+    ],
+    "subTitle": [
+     {
+      "fontColor": {
+       "solid": {
+        "color": "#9FB3D1"
+       }
+      },
+      "fontSize": 11
+     }
+    ],
+    "visualHeader": [
+     {
+      "background": {
+       "solid": {
+        "color": "#10264A"
+       }
+      },
+      "border": {
+       "solid": {
+        "color": "#10264A"
+       }
+      },
+      "foreground": {
+       "solid": {
+        "color": "#9FB3D1"
+       }
+      },
+      "transparency": 0
+     }
+    ],
+    "categoryAxis": [
+     {
+      "labelColor": {
+       "solid": {
+        "color": "#C9D6EA"
+       }
+      },
+      "titleColor": {
+       "solid": {
+        "color": "#9FB3D1"
+       }
+      },
+      "fontSize": 12,
+      "showAxisTitle": false
+     }
+    ],
+    "valueAxis": [
+     {
+      "labelColor": {
+       "solid": {
+        "color": "#9FB3D1"
+       }
+      },
+      "titleColor": {
+       "solid": {
+        "color": "#9FB3D1"
+       }
+      },
+      "gridlineColor": {
+       "solid": {
+        "color": "#1E3A66"
+       }
+      },
+      "gridlineStyle": "dotted",
+      "showAxisTitle": false,
+      "fontSize": 11
+     }
+    ],
+    "labels": [
+     {
+      "show": true,
+      "color": {
+       "solid": {
+        "color": "#F8FAFC"
+       }
+      },
+      "fontSize": 12
+     }
+    ],
+    "legend": [
+     {
+      "labelColor": {
+       "solid": {
+        "color": "#C9D6EA"
+       }
+      }
+     }
+    ],
+    "padding": [
+     {
+      "top": 14,
+      "bottom": 12,
+      "left": 16,
+      "right": 16
+     }
+    ]
+   }
+  },
+  "page": {
+   "*": {
+    "background": [
+     {
+      "color": {
+       "solid": {
+        "color": "#0A1A33"
+       }
+      },
+      "transparency": 0
+     }
+    ],
+    "outspace": [
+     {
+      "color": {
+       "solid": {
+        "color": "#0A1A33"
+       }
+      },
+      "transparency": 0
+     }
+    ]
+   }
+  },
+  "tableEx": {
+   "*": {
+    "grid": [
+     {
+      "gridVertical": false,
+      "gridHorizontal": true,
+      "gridHorizontalColor": {
+       "solid": {
+        "color": "#1E3A66"
+       }
+      },
+      "outlineColor": {
+       "solid": {
+        "color": "#1E3A66"
+       }
+      },
+      "rowPadding": 5,
+      "textSize": 12
+     }
+    ],
+    "columnHeaders": [
+     {
+      "fontColor": {
+       "solid": {
+        "color": "#F8FAFC"
+       }
+      },
+      "backColor": {
+       "solid": {
+        "color": "#081429"
+       }
+      },
+      "fontFamily": "Segoe UI Semibold",
+      "fontSize": 12,
+      "wordWrap": true
+     }
+    ],
+    "values": [
+     {
+      "fontColorPrimary": {
+       "solid": {
+        "color": "#E2E8F0"
+       }
+      },
+      "backColorPrimary": {
+       "solid": {
+        "color": "#10264A"
+       }
+      },
+      "fontColorSecondary": {
+       "solid": {
+        "color": "#E2E8F0"
+       }
+      },
+      "backColorSecondary": {
+       "solid": {
+        "color": "#0D2140"
+       }
+      },
+      "wordWrap": true
+     }
+    ]
+   }
+  },
+  "slicer": {
+   "*": {
+    "items": [
+     {
+      "fontColor": {
+       "solid": {
+        "color": "#E2E8F0"
+       }
+      },
+      "background": {
+       "solid": {
+        "color": "#10264A"
+       }
+      },
+      "textSize": 13
+     }
+    ],
+    "header": [
+     {
+      "fontColor": {
+       "solid": {
+        "color": "#9FB3D1"
+       }
+      },
+      "textSize": 10
+     }
+    ],
+    "background": [
+     {
+      "show": false
+     }
+    ],
+    "border": [
+     {
+      "show": false
+     }
+    ]
+   }
+  },
+  "cardVisual": {
+   "*": {
+    "value": [
+     {
+      "fontColor": {
+       "solid": {
+        "color": "#F8FAFC"
+       }
+      },
+      "fontSize": 34,
+      "fontFamily": "Segoe UI Semibold"
+     }
+    ],
+    "label": [
+     {
+      "fontColor": {
+       "solid": {
+        "color": "#9FB3D1"
+       }
+      },
+      "fontSize": 13
+     }
+    ],
+    "accentBar": [
+     {
+      "show": true,
+      "color": {
+       "solid": {
+        "color": "#3B82F6"
+       }
+      },
+      "width": 4
+     }
+    ],
+    "fillCustom": [
+     {
+      "show": true,
+      "fillColor": {
+       "solid": {
+        "color": "#10264A"
+       }
+      }
+     }
+    ],
+    "border": [
+     {
+      "show": true,
+      "color": {
+       "solid": {
+        "color": "#1E3A66"
+       }
+      },
+      "radius": 12
+     }
+    ]
+   }
+  }
+ }
+}
